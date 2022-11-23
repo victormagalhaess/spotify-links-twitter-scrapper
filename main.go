@@ -76,12 +76,18 @@ func print_urls(urls []string, category string) {
 	}
 }
 
-func main() {
-	user := os.Args[1]
-	ctx := context.Background()
+//centralize urls processing
+func process_urls(user string, ctx context.Context) []string {
 	urls := scrap_urls(user, ctx)
 	urls = remove_query(urls)
 	urls = remove_duplicates(urls)
+	return urls
+}
+
+func main() {
+	user := os.Args[1]
+	ctx := context.Background()
+	urls := process_urls(user, ctx)
 	tracks, playlists, _ := segregate_urls(urls)
 	print_urls(tracks, "Tracks")
 	print_urls(playlists, "Playlists")
